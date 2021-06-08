@@ -2,8 +2,9 @@ package com.codingwithmitch.googlemaps2018.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -87,25 +88,25 @@ public class LoginActivity extends AppCompatActivity implements
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                            .setTimestampsInSnapshotsEnabled(true)
-                            .build();
-                    db.setFirestoreSettings(settings);
-
-                    DocumentReference userRef = db.collection(getString(R.string.collection_users))
-                            .document(user.getUid());
-
-                    userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.isSuccessful()){
-                                Log.d(TAG, "onComplete: successfully set the user client.");
-                                User user = task.getResult().toObject(User.class);
-                                ((UserClient)(getApplicationContext())).setUser(user);
-                            }
-                        }
-                    });
+//                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+//                    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+//                            .build();
+//                    //                            .setTimestampsInSnapshotsEnabled(true)
+//                    db.setFirestoreSettings(settings);
+//
+//                    DocumentReference userRef = db.collection(getString(R.string.collection_users))
+//                            .document(user.getUid());
+//
+//                    userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                            if(task.isSuccessful()){
+//                                Log.d(TAG, "onComplete: successfully set the user client.");
+//                                User user = task.getResult().toObject(User.class);
+//                                ((UserClient)(getApplicationContext())).setUser(user);
+//                            }
+//                        }
+//                    });
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

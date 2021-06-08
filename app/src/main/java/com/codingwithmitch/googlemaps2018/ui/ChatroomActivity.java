@@ -1,18 +1,20 @@
 package com.codingwithmitch.googlemaps2018.ui;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.codingwithmitch.googlemaps2018.R;
 import com.codingwithmitch.googlemaps2018.UserClient;
@@ -20,11 +22,14 @@ import com.codingwithmitch.googlemaps2018.adapters.ChatMessageRecyclerAdapter;
 import com.codingwithmitch.googlemaps2018.models.ChatMessage;
 import com.codingwithmitch.googlemaps2018.models.Chatroom;
 import com.codingwithmitch.googlemaps2018.models.User;
+import com.codingwithmitch.googlemaps2018.models.UserLocation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -55,6 +60,7 @@ public class ChatroomActivity extends AppCompatActivity implements
     private ArrayList<ChatMessage> mMessages = new ArrayList<>();
     private Set<String> mMessageIds = new HashSet<>();
     private ArrayList<User> mUserList = new ArrayList<>();
+    private ArrayList<UserLocation> mUserLocation = new ArrayList<>();
     private UserListFragment mUserListFragment;
 
 
@@ -129,11 +135,20 @@ public class ChatroomActivity extends AppCompatActivity implements
 
                             // Clear the list and add all the users again
                             mUserList.clear();
+
+                            // initialize array to save users
                             mUserList = new ArrayList<>();
 
+                            // loop for each uses in chatRooms
                             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                // to get user data
                                 User user = doc.toObject(User.class);
+
+                                // to put all users in chatRooms in recycleView
                                 mUserList.add(user);
+
+                                // to get locations of all users in chatrooms
+                                getUserLocation(user);
                             }
 
                             Log.d(TAG, "onEvent: user list size: " + mUserList.size());
@@ -141,6 +156,22 @@ public class ChatroomActivity extends AppCompatActivity implements
                     }
                 });
     }
+
+    private void getUserLocation(User user) {
+        DocumentReference documentReference = mDb
+                .collection(getString(R.string.collection_user_locations))
+                .document(user.getUser_id());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    if (task.getResult().toObject(UserLocation.class) != null){
+                        mUserLocation.add(task.getResult().toObject(UserLocation.class));
+                    }
+                }
+            }
+        });
+                    }
 
     private void initChatroomRecyclerView(){
         mChatMessageRecyclerAdapter = new ChatMessageRecyclerAdapter(mMessages, new ArrayList<User>(), this);
@@ -208,20 +239,34 @@ public class ChatroomActivity extends AppCompatActivity implements
         mMessage.setText("");
     }
 
+    // calling mapFragment and send data
     private void inflateUserListFragment(){
+        // to hide keyboard
         hideSoftKeyboard();
-        
-        UserListFragment fragment = UserListFragment.newInstance();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(getString(R.string.intent_user_list), mUserList);
-        fragment.setArguments(bundle);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
-        transaction.replace(R.id.user_list_container, fragment, getString(R.string.fragment_user_list));
-        transaction.addToBackStack(getString(R.string.fragment_user_list));
-        transaction.commit();
+        try {
+            // to call fragment
+            UserListFragment fragment = UserListFragment.newInstance();
+            // create bundle
+            Bundle bundle = new Bundle();
+            // send user data to fragment
+            bundle.putParcelableArrayList(getString(R.string.intent_user_list), mUserList);
+            // send user location to fragment
+            bundle.putParcelableArrayList(getString(R.string.intent_user_locations),mUserLocation);
+            fragment.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
+            transaction.replace(R.id.user_list_container, fragment, getString(R.string.fragment_user_list));
+            transaction.addToBackStack(getString(R.string.fragment_user_list));
+            transaction.commit();
+        }catch(Exception e){
+            Toast.makeText(getApplicationContext(),"current error: "+e.toString(),
+                    Toast.LENGTH_LONG).show();
+            Log.e("current error: ",e.toString());
+        }
     }
+
 
     private void hideSoftKeyboard(){
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

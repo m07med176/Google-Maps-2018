@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.codingwithmitch.googlemaps2018"
-        minSdkVersion 15
-        targetSdkVersion 27
+        minSdkVersion 16
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -17,27 +18,38 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        targetCompatibility = 1.8
+        sourceCompatibility = 1.8
+    }
+
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
+    implementation 'com.android.support:support-annotations:28.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation "com.google.android.gms:play-services-location:18.0.0"
+
+    implementation 'com.android.support:support-v4:28.0.0'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //Android Support Design Library
-    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:design:28.0.0'
     //RecyclerView
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
     // Support multidex
     implementation 'com.android.support:multidex:1.0.3'
     // Firebase Core
-    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-core:18.0.2'
     //Firebase Authentication
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
+    implementation 'com.google.firebase:firebase-auth:20.0.3'
     // Firestore Firestore
-    implementation 'com.google.firebase:firebase-firestore:17.0.4'
+    implementation 'com.google.firebase:firebase-firestore:22.1.1'
 
     // glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
@@ -45,5 +57,15 @@ dependencies {
 
     // Circle ImageView
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    // my firebase implementations
+    implementation platform('com.google.firebase:firebase-bom:26.7.0')
+    implementation 'com.google.firebase:firebase-analytics'
+
+    // Maps utils (required for custom markers)
+    implementation 'com.google.maps.android:android-maps-utils:2.2.0'
+
+    // api diraction
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
+    implementation 'com.google.maps:google-maps-services:0.9.3'
 }
-apply plugin: 'com.google.gms.google-services'

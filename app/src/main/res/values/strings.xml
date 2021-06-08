@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">GoogleMaps2018</string>
-
+    <string name="app_name">My Family</string>
+    <string name="google_map_api_key">AIzaSyDoedG1Y17WiQCwp_shI0nx2U0_vkpF_9M</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -48,6 +48,8 @@
     <string name="action_leave_chatroom">Leave chatroom</string>
     <string name="action_chatroom_user_list">User list</string>
     <string name="action_profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "793911142315",
+    "project_id": "testproject-81e21",
+    "storage_bucket": "testproject-81e21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793911142315:android:85ba721c9bb52c065794ee",
+        "android_client_info": {
+          "package_name": "com.codingwithmitch.googlemaps2018"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793911142315-p137agshjsp0nfpp3hba73vv6667v4h6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFxbO6cBFtR65h6szB8ZDuxM-h39JjLOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793911142315-p137agshjsp0nfpp3hba73vv6667v4h6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793911142315:android:cb7f56c0ff480e2b5794ee",
+        "android_client_info": {
+          "package_name": "com.mohamedTest.networkconnectionservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793911142315-p137agshjsp0nfpp3hba73vv6667v4h6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFxbO6cBFtR65h6szB8ZDuxM-h39JjLOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793911142315-p137agshjsp0nfpp3hba73vv6667v4h6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
